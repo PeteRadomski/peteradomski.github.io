@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Showcase</title>
+    <style>
+        @font-face {
+            font-family: 'Satoshi';
+            src: url('fonts/Satoshi-Variable.woff2') format('woff2');
+            font-weight: 300 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-smooth: always;
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #222;
+        }
+
+        .page-header.clickable {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .page-header.clickable:hover {
+            color: #1976d2;
+        }
+
+        .page-header .round-text {
+            color: #999;
+            font-weight: 400;
+        }
+
+        h1 {
+            text-align: left;
+            margin-bottom: 0.5rem;
+            color: #222;
+        }
+
+        .subtitle {
+            text-align: left;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Gallery View */
+        .gallery-view {
+            width: 100%;
+        }
+
+        .instructions {
+            text-align: left;
+            background: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .instructions p {
+            margin: 0.5rem 0;
+            color: #1976d2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .gallery-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-section-title {
+            font-size: 1.4rem;
+            color: #444;
+            font-weight: 700;
+        }
+
+        .gallery-section-title .count {
+            font-weight: 400;
+        }
+
+        .warning-banner {
+            text-align: left;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .warning-banner p {
+            margin: 0;
+            color: #856404;
+        }
+
+        .gallery-tabs {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: fit-content;
+        }
+
+        .gallery-tab {
+            padding: 0.75rem 2rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            transition: all 0.2s;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .gallery-tab:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .gallery-tab.active {
+            background: #1976d2;
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            }
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+            padding: 1.25rem;
+        }
+
+        .gallery-item-name {
+            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        /* Canvas View */
+        .canvas-view {
+            display: none;
+        }
+
+        .canvas-view.active {
+            display: block;
+        }
+
+        .canvas-container {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Canvas layout: 1 canvas = 1 column, 2 = 2 columns, 3-4 = 2x2 grid */
+        .canvas-container.grid-1 {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+        }
+
+        .canvas-container.grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .canvas-container.grid-3,
+        .canvas-container.grid-4 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
+        }
+
+        @media (max-width: 768px) {
+            .canvas-container.grid-2,
+            .canvas-container.grid-3,
+            .canvas-container.grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .canvas-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .canvas-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .remove-canvas-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #999;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        .remove-canvas-btn:hover {
+            background: #fee;
+            border-color: #f88;
+            color: #c33;
+        }
+
+        .remove-canvas-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-container label {
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .toggle-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .change-logo-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .change-logo-btn:hover {
+            background: #f5f5f5;
+            border-color: #999;
+            color: #333;
+        }
+
+        .canvas-display {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 3.5rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .canvas-display img {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            padding: 1.5rem;
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+
+        .canvas-display img:hover {
+            transform: scale(1.02);
+        }
+
+        .canvas-display.empty {
+            border: 2px dashed #ccc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .canvas-display.empty:hover {
+            border-color: #1976d2;
+            background: #f5f5f5;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            width: 48px;
+            height: 48px;
+            color: #ccc;
+        }
+
+        .empty-state-text {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .canvas-name {
+            margin-top: 1.5rem;
+            color: #999;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .add-canvas-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-canvas-btn:hover {
+            background: #1565c0;
+        }
+
+        .add-canvas-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Popover Menu */
+        .popover-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popover-overlay.active {
+            display: flex;
+        }
+
+        .popover-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            width: 90%;
+        }
+
+        .popover-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .popover-header h2 {
+            color: #222;
+            font-size: 1.5rem;
+        }
+
+        .popover-tabs {
+            display: flex;
+            justify-content: flex-start;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .popover-tab {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #666;
+            transition: all 0.2s;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .popover-tab:hover {
+            background: white;
+            color: #333;
+        }
+
+        .popover-tab.active {
+            background: #1976d2;
+            color: white;
+        }
+
+        .close-popover {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .close-popover:hover {
+            background: #f5f5f5;
+        }
+
+        .popover-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .popover-gallery::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .popover-gallery::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .popover-gallery::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .popover-gallery::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .popover-item {
+            cursor: pointer;
+            text-align: center;
+            padding: 1.25rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .popover-item:hover {
+            background: #f5f5f5;
+        }
+
+        .popover-item img {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+            padding: 1.25rem;
+        }
+
+        .popover-item-name {
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .back-to-gallery-btn {
+            background: none;
+            color: #1976d2;
+            border: none;
+            padding: 0;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+
+        .back-to-gallery-btn:hover {
+            color: #1565c0;
+            text-decoration: underline;
+        }
+
+        /* Zoom Modal */
+        .zoom-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        .zoom-overlay.active {
+            display: flex;
+        }
+
+        .zoom-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .zoom-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <h1 class="page-header" id="pageHeader">ISCM Logo Approaches <span class="round-text">(Round 1)</span></h1>
+        
+        <!-- Gallery View -->
+        <div class="gallery-view" id="galleryView">
+            <div class="instructions">
+                <p>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <strong>Choose a logo to view</strong> - Click on any logo below to view it on a canvas
+                </p>
+                <p>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    You can add up to 4 canvases to compare logos side by side
+                </p>
+                <p>
+                    <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Use the checkbox to toggle between Gradient and Solid versions
+                </p>
+            </div>
+            <div class="warning-banner">
+                <p>These are rough versions of the logo for a first pass, once we choose a direction can further polish and refine!</p>
+            </div>
+            <div class="gallery-section-header">
+                <div class="gallery-section-title" id="gallerySectionTitle">Logos <span class="count">(12)</span></div>
+                <div class="gallery-tabs">
+                    <button class="gallery-tab active" id="galleryTabSolid" onclick="switchGalleryTab('solid')">Solid (12)</button>
+                    <button class="gallery-tab" id="galleryTabGradient" onclick="switchGalleryTab('gradient')">Gradient (12)</button>
+                </div>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- Canvas View -->
+        <div class="canvas-view" id="canvasView">
+            <div class="view-toggle">
+                <button class="back-to-gallery-btn" onclick="showGallery()">← Back to Gallery</button>
+                <button class="add-canvas-btn" id="addCanvasBtn" onclick="addCanvas()">+ Add Another Canvas for Comparison</button>
+            </div>
+            <div class="canvas-container" id="canvasContainer"></div>
+        </div>
+    </div>
+
+    <!-- Popover Menu -->
+    <div class="popover-overlay" id="popoverOverlay" onclick="closePopoverOnOverlay(event)">
+        <div class="popover-content" onclick="event.stopPropagation()">
+            <div class="popover-header">
+                <h2>Select a Logo</h2>
+                <button class="close-popover" onclick="closePopover()">&times;</button>
+            </div>
+            <div class="popover-tabs">
+                <button class="popover-tab active" id="popoverTabSolid" onclick="switchPopoverTab('solid')">Solid</button>
+                <button class="popover-tab" id="popoverTabGradient" onclick="switchPopoverTab('gradient')">Gradient</button>
+            </div>
+            <div class="popover-gallery" id="popoverGallery"></div>
+        </div>
+    </div>
+
+    <!-- Zoom Modal -->
+    <div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
+        <div class="zoom-content" onclick="event.stopPropagation()">
+            <button class="zoom-close" onclick="closeZoom()">&times;</button>
+            <img id="zoomedImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Logo data - will be populated from available files
+        const logos = [
+            'Clover', 'Forward', 'Tall', 'Skew Back', 'Skew Forward',
+            'Round Skew Star', 'Sharp Square Star', 'Rounded Square Star',
+            'Skew Star Semi Round', 'Skew Sharp', 'Radius Circle', 'Radius Star'
+        ];
+
+        let canvases = [];
+        let currentPopoverCanvas = null;
+        let currentGalleryTab = 'solid'; // Default is solid
+        let currentPopoverTab = 'solid'; // Default is solid
+
+        // Initialize gallery
+        function initGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            const totalLogoApproaches = logos.length;
+            const totalLogos = totalLogoApproaches * 2; // Each approach has Solid + Gradient
+            
+            // Update section title and tab counts
+            const sectionTitle = document.getElementById('gallerySectionTitle');
+            sectionTitle.innerHTML = `Logos <span class="count">(${totalLogos})</span>`;
+            document.getElementById('galleryTabSolid').textContent = `Solid (${totalLogoApproaches})`;
+            document.getElementById('galleryTabGradient').textContent = `Gradient (${totalLogoApproaches})`;
+            
+            logos.forEach(logoName => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => selectLogoForCanvas(null, logoName);
+                
+                const img = document.createElement('img');
+                img.src = `assets/${logoName} - Solid@6x.png`; // Default to Solid
+                img.alt = logoName;
+                img.dataset.logoName = logoName; // Store logo name for easy reference
+                
+                const name = document.createElement('div');
+                name.className = 'gallery-item-name';
+                name.textContent = logoName;
+                
+                item.appendChild(img);
+                item.appendChild(name);
+                galleryGrid.appendChild(item);
+            });
+
+            initPopoverGallery();
+        }
+
+        // Switch gallery tab (solid/gradient)
+        function switchGalleryTab(tab) {
+            currentGalleryTab = tab;
+            
+            // Update tab buttons
+            const solidTab = document.getElementById('galleryTabSolid');
+            const gradientTab = document.getElementById('galleryTabGradient');
+            
+            if (tab === 'solid') {
+                solidTab.classList.add('active');
+                gradientTab.classList.remove('active');
+            } else {
+                gradientTab.classList.add('active');
+                solidTab.classList.remove('active');
+            }
+            
+            // Update all gallery images
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            galleryItems.forEach(img => {
+                const logoName = img.dataset.logoName;
+                const version = tab === 'solid' ? 'Solid' : 'Gradient';
+                img.src = `assets/${logoName} - ${version}@6x.png`;
+            });
+        }
+
+        // Initialize popover gallery
+        function initPopoverGallery() {
+            const popoverGallery = document.getElementById('popoverGallery');
+            logos.forEach(logoName => {
+                const item = document.createElement('div');
+                item.className = 'popover-item';
+                item.onclick = () => selectLogoFromPopover(logoName);
+                
+                const img = document.createElement('img');
+                img.src = `assets/${logoName} - Solid@6x.png`; // Default to Solid
+                img.alt = logoName;
+                img.dataset.logoName = logoName; // Store logo name for easy reference
+                
+                const name = document.createElement('div');
+                name.className = 'popover-item-name';
+                name.textContent = logoName;
+                
+                item.appendChild(img);
+                item.appendChild(name);
+                popoverGallery.appendChild(item);
+            });
+        }
+
+        // Switch popover tab (solid/gradient)
+        function switchPopoverTab(tab) {
+            currentPopoverTab = tab;
+            
+            // Update tab buttons
+            const solidTab = document.getElementById('popoverTabSolid');
+            const gradientTab = document.getElementById('popoverTabGradient');
+            
+            if (tab === 'solid') {
+                solidTab.classList.add('active');
+                gradientTab.classList.remove('active');
+            } else {
+                gradientTab.classList.add('active');
+                solidTab.classList.remove('active');
+            }
+            
+            // Update all popover images
+            const popoverItems = document.querySelectorAll('.popover-item img');
+            popoverItems.forEach(img => {
+                const logoName = img.dataset.logoName;
+                const version = tab === 'solid' ? 'Solid' : 'Gradient';
+                img.src = `assets/${logoName} - ${version}@6x.png`;
+            });
+        }
+
+        // Select logo for a canvas (from gallery or popover)
+        function selectLogoForCanvas(canvasIndex, logoName) {
+            if (canvasIndex === null) {
+                // New canvas
+                if (canvases.length >= 4) return;
+                canvasIndex = canvases.length;
+                addCanvas();
+            }
+            
+            canvases[canvasIndex].logoName = logoName;
+            // Use the current gallery tab setting (defaults to solid, so invert for isGradient)
+            canvases[canvasIndex].isGradient = currentGalleryTab === 'gradient';
+            updateCanvas(canvasIndex);
+            
+            if (canvasIndex === 0) {
+                showCanvasView();
+            }
+        }
+
+        // Show canvas view
+        function showCanvasView() {
+            document.getElementById('galleryView').style.display = 'none';
+            document.getElementById('canvasView').classList.add('active');
+            // Make header clickable to return to gallery
+            const header = document.getElementById('pageHeader');
+            header.classList.add('clickable');
+            header.onclick = showGallery;
+        }
+
+        // Select logo from popover
+        function selectLogoFromPopover(logoName) {
+            if (currentPopoverCanvas !== null) {
+                canvases[currentPopoverCanvas].logoName = logoName;
+                // Use the current popover tab setting
+                canvases[currentPopoverCanvas].isGradient = currentPopoverTab === 'gradient';
+                updateCanvas(currentPopoverCanvas);
+            }
+            closePopover();
+        }
+
+        // Add a new canvas
+        function addCanvas() {
+            if (canvases.length >= 4) return;
+
+            const canvasIndex = canvases.length;
+            const canvasWrapper = document.createElement('div');
+            canvasWrapper.className = 'canvas-wrapper';
+            canvasWrapper.id = `canvas-${canvasIndex}`;
+
+            const controls = document.createElement('div');
+            controls.className = 'canvas-controls';
+
+            const controlsLeft = document.createElement('div');
+            controlsLeft.className = 'canvas-controls-left';
+
+            const toggleContainer = document.createElement('div');
+            toggleContainer.className = 'toggle-container';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'toggle-checkbox';
+            checkbox.id = `toggle-${canvasIndex}`;
+            // Default checkbox state based on current gallery tab (solid = unchecked, gradient = checked)
+            checkbox.checked = currentGalleryTab === 'gradient';
+            checkbox.onchange = () => toggleGradient(canvasIndex);
+
+            const label = document.createElement('label');
+            label.htmlFor = `toggle-${canvasIndex}`;
+            label.textContent = 'Gradient';
+
+            toggleContainer.appendChild(checkbox);
+            toggleContainer.appendChild(label);
+
+            const changeBtn = document.createElement('button');
+            changeBtn.className = 'change-logo-btn';
+            changeBtn.textContent = 'Change Logo';
+            changeBtn.onclick = () => openPopover(canvasIndex);
+
+            controlsLeft.appendChild(toggleContainer);
+            controlsLeft.appendChild(changeBtn);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-canvas-btn';
+            removeBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="m19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            `;
+            removeBtn.onclick = () => removeCanvas(canvasIndex);
+
+            controls.appendChild(controlsLeft);
+            controls.appendChild(removeBtn);
+
+            const display = document.createElement('div');
+            display.className = 'canvas-display empty';
+            display.id = `canvas-display-${canvasIndex}`;
+            display.onclick = () => openPopover(canvasIndex);
+
+            // Empty state
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            
+            const plusIcon = document.createElement('div');
+            plusIcon.className = 'empty-state-icon';
+            plusIcon.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+            `;
+            
+            const emptyText = document.createElement('div');
+            emptyText.className = 'empty-state-text';
+            emptyText.textContent = 'Click to select a logo';
+            
+            emptyState.appendChild(plusIcon);
+            emptyState.appendChild(emptyText);
+            display.appendChild(emptyState);
+
+            const img = document.createElement('img');
+            img.id = `canvas-img-${canvasIndex}`;
+            img.alt = '';
+            img.style.display = 'none';
+            img.onclick = (e) => {
+                e.stopPropagation();
+                openZoom(img.src);
+            };
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'canvas-name';
+            nameDiv.id = `canvas-name-${canvasIndex}`;
+            nameDiv.style.display = 'none';
+
+            display.appendChild(img);
+            display.appendChild(nameDiv);
+
+            canvasWrapper.appendChild(controls);
+            canvasWrapper.appendChild(display);
+
+            document.getElementById('canvasContainer').appendChild(canvasWrapper);
+
+            canvases.push({
+                logoName: null,
+                isGradient: true,
+                element: canvasWrapper,
+                index: canvasIndex
+            });
+
+            updateCanvasLayout();
+            updateAddButtonState();
+        }
+
+        // Remove a canvas
+        function removeCanvas(canvasIndex) {
+            if (canvases.length <= 1) {
+                // If last canvas, go back to gallery
+                showGallery();
+                return;
+            }
+            
+            const canvas = canvases[canvasIndex];
+            if (canvas && canvas.element) {
+                canvas.element.remove();
+            }
+            
+            canvases.splice(canvasIndex, 1);
+            
+            // Rebuild all canvases with updated indices
+            const container = document.getElementById('canvasContainer');
+            container.innerHTML = '';
+            
+            canvases.forEach((canvas, idx) => {
+                canvas.index = idx;
+                canvas.element.id = `canvas-${idx}`;
+                
+                const checkbox = canvas.element.querySelector('.toggle-checkbox');
+                checkbox.id = `toggle-${idx}`;
+                const label = canvas.element.querySelector('label');
+                label.htmlFor = `toggle-${idx}`;
+                checkbox.onchange = () => toggleGradient(idx);
+                
+                canvas.element.querySelector('.change-logo-btn').onclick = () => openPopover(idx);
+                canvas.element.querySelector('.remove-canvas-btn').onclick = () => removeCanvas(idx);
+                
+                const img = canvas.element.querySelector('img');
+                if (img) {
+                    img.id = `canvas-img-${idx}`;
+                    img.onclick = (e) => {
+                        e.stopPropagation();
+                        if (img.src) openZoom(img.src);
+                    };
+                }
+                const nameDiv = canvas.element.querySelector('.canvas-name');
+                if (nameDiv) nameDiv.id = `canvas-name-${idx}`;
+                
+                const display = canvas.element.querySelector('.canvas-display');
+                if (display && !canvas.logoName) {
+                    display.onclick = () => openPopover(idx);
+                }
+                
+                container.appendChild(canvas.element);
+                updateCanvas(idx);
+            });
+
+            updateCanvasLayout();
+            updateAddButtonState();
+        }
+
+        // Update canvas layout based on count
+        function updateCanvasLayout() {
+            const container = document.getElementById('canvasContainer');
+            const count = canvases.length;
+            
+            container.classList.remove('grid-1', 'grid-2', 'grid-3', 'grid-4');
+            
+            if (count === 1) {
+                container.classList.add('grid-1');
+            } else if (count === 2) {
+                container.classList.add('grid-2');
+            } else if (count === 3) {
+                container.classList.add('grid-3');
+            } else if (count === 4) {
+                container.classList.add('grid-4');
+            }
+        }
+
+        // Update canvas display
+        function updateCanvas(canvasIndex) {
+            const canvas = canvases[canvasIndex];
+            const display = document.getElementById(`canvas-display-${canvasIndex}`);
+            const img = document.getElementById(`canvas-img-${canvasIndex}`);
+            const nameDiv = document.getElementById(`canvas-name-${canvasIndex}`);
+            const checkbox = document.getElementById(`toggle-${canvasIndex}`);
+            const label = checkbox.nextElementSibling;
+            const emptyState = display.querySelector('.empty-state');
+
+            if (!canvas.logoName) {
+                // Show empty state
+                display.classList.add('empty');
+                if (emptyState) emptyState.style.display = 'flex';
+                if (img) img.style.display = 'none';
+                if (nameDiv) nameDiv.style.display = 'none';
+                display.onclick = () => openPopover(canvasIndex);
+                return;
+            }
+
+            // Show logo
+            display.classList.remove('empty');
+            if (emptyState) emptyState.style.display = 'none';
+            if (img) {
+                img.style.display = 'block';
+                const version = canvas.isGradient ? 'Gradient' : 'Solid';
+                img.src = `assets/${canvas.logoName} - ${version}@6x.png`;
+                img.alt = canvas.logoName;
+            }
+            if (nameDiv) {
+                nameDiv.style.display = 'block';
+                const version = canvas.isGradient ? 'Gradient' : 'Solid';
+                nameDiv.textContent = `${canvas.logoName} - ${version}`;
+            }
+            label.textContent = 'Gradient';
+            checkbox.checked = canvas.isGradient; // Sync checkbox state (checked = gradient, unchecked = solid)
+            display.onclick = null; // Remove click handler when logo is present
+        }
+
+        // Toggle gradient/solid
+        function toggleGradient(canvasIndex) {
+            const canvas = canvases[canvasIndex];
+            if (!canvas.logoName) return;
+
+            canvas.isGradient = !canvas.isGradient;
+            updateCanvas(canvasIndex);
+        }
+
+        // Open popover for logo selection
+        function openPopover(canvasIndex) {
+            currentPopoverCanvas = canvasIndex;
+            // Reset popover tab to solid when opening
+            currentPopoverTab = 'solid';
+            switchPopoverTab('solid');
+            document.getElementById('popoverOverlay').classList.add('active');
+        }
+
+        // Open zoom modal
+        function openZoom(imageSrc) {
+            const zoomedImage = document.getElementById('zoomedImage');
+            zoomedImage.src = imageSrc;
+            document.getElementById('zoomOverlay').classList.add('active');
+        }
+
+        // Close zoom modal
+        function closeZoom() {
+            document.getElementById('zoomOverlay').classList.remove('active');
+        }
+
+        // Close popover
+        function closePopover() {
+            document.getElementById('popoverOverlay').classList.remove('active');
+            currentPopoverCanvas = null;
+        }
+
+        // Close popover when clicking overlay
+        function closePopoverOnOverlay(event) {
+            if (event.target.id === 'popoverOverlay') {
+                closePopover();
+            }
+        }
+
+        // Show gallery view
+        function showGallery() {
+            // Clear all canvases
+            canvases = [];
+            document.getElementById('canvasContainer').innerHTML = '';
+            document.getElementById('galleryView').style.display = 'block';
+            document.getElementById('canvasView').classList.remove('active');
+            // Update header to not be clickable
+            const header = document.getElementById('pageHeader');
+            header.classList.remove('clickable');
+            header.onclick = null;
+        }
+
+        // Update add button state
+        function updateAddButtonState() {
+            const btn = document.getElementById('addCanvasBtn');
+            if (canvases.length >= 4) {
+                btn.disabled = true;
+                btn.textContent = 'Maximum 4 canvases reached';
+            } else {
+                btn.disabled = false;
+                btn.textContent = '+ Add Another Canvas for Comparison';
+            }
+        }
+
+        // Initialize on load
+        initGallery();
+    </script>
+</body>
+</html>
+
